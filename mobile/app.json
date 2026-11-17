@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Prépa Maths CRPE",
+    "slug": "prepa-maths-crpe",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#f7f5ef" } }
+  }
+}

@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Prépa Maths CRPE API
+  version: 0.1.0
+  description: Runtime foundation. Educational, authentication and billing routes are not implemented.
+servers:
+  - url: /
+tags:
+  - name: Operations
+    description: Process liveness and dependency readiness.
+  - name: Configuration
+    description: Public application capabilities.
+paths:
+  /health/live:
+    get:
+      operationId: getLiveness
+      security: []
+      tags: [Operations]
+      summary: Process liveness independent of backing services
+      responses:
+        "200":
+          description: Process is responding
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /health/ready:
+    get:
+      operationId: getReadiness
+      security: []
+      tags: [Operations]
+      summary: Database and schema readiness
+      responses:
+        "200":
+          description: Instance can serve requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "503":
+          description: Required backing service or migration is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unavailable"
+  /v1/config:
+    get:
+      operationId: getPublicConfig
+      security: []
+      tags: [Configuration]
+      summary: Public product flags without secrets
+      responses:
+        "200":
+          description: Public configuration; sales disabled by default
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicConfig"
+components:
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+    Unavailable:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [unavailable]
+    PublicConfig:
+      type: object
+      additionalProperties: false
+      required: [salesEnabled]
+      properties:
+        salesEnabled:
+          type: boolean
+          default: false

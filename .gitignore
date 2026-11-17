@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+.expo/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+backend/bin/
+mobile/ios/
+mobile/android/
+.DS_Store
+tmp/
+*.log
