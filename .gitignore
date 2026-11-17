@@ -9,8 +9,18 @@ build/
 coverage/
 *.tsbuildinfo
 backend/bin/
-mobile/ios/
-mobile/android/
+mobile/**/.build/
+mobile/**/.gradle/
+mobile/**/DerivedData/
+mobile/**/local.properties
+mobile/**/*.xcuserstate
+mobile/**/xcuserdata/
 .DS_Store
 tmp/
 *.log
+# Native distribution credentials belong in the owner's secret storage.
+*.p12
+*.jks
+*.keystore
+*.mobileprovision
+AuthKey_*.p8

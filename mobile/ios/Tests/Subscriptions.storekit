@@ -1,0 +1,35 @@
+{
+  "identifier" : "6EB77B88-D30E-4A6B-8E23-7365828AB24E",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : { "_locale" : "fr_FR", "_storefront" : "FRA" },
+  "subscriptionGroups" : [
+    {
+      "id" : "C87B8AA1-A25A-4455-8650-D867C5B3DD49",
+      "localizations" : [],
+      "name" : "Abonnements du test local",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "1.00",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "5E9452C0-6B7E-41DB-ACBF-E98860A2B203",
+          "localizations" : [
+            {
+              "description" : "Fixture exclusivement réservée aux tests StoreKit locaux.",
+              "displayName" : "Formule de test", "locale" : "fr_FR"
+            }
+          ],
+          "productID" : "test.crpe.store.subscription",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Formule de test",
+          "subscriptionGroupID" : "C87B8AA1-A25A-4455-8650-D867C5B3DD49",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : { "major" : 3, "minor" : 0 }
+}

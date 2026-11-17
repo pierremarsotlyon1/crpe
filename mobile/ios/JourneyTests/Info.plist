@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+<key>CFBundleExecutable</key><string>$(EXECUTABLE_NAME)</string>
+<key>CFBundleName</key><string>$(PRODUCT_NAME)</string>
+<key>CFBundlePackageType</key><string>BNDL</string>
+<key>CFBundleShortVersionString</key><string>1.0</string>
+<key>CFBundleVersion</key><string>1</string>
+<key>CRPETestMock</key><string>$(CRPE_TEST_MOCK)</string>
+<key>CRPETestPhoto</key><string>$(CRPE_TEST_PHOTO)</string>
+<key>CRPETestEmail</key><string>$(CRPE_TEST_EMAIL)</string>
+</dict></plist>

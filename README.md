@@ -1,61 +1,47 @@
 # Prépa Maths CRPE
 
-Foundation for a French mathematics preparation platform: Go API and workers,
-Next.js web, Expo mobile, and one shared OpenAPI client. Product features are tracked
-in [PLANS.md](PLANS.md); the current implementation is the runtime foundation.
+Une plateforme de préparation aux mathématiques du CRPE. L’enseignante prépare ses cours dans un atelier web et choisit les contenus à publier. Les élèves disposent d’un parcours web et de clients mobiles natifs. La liste d’attente fonctionne indépendamment des ventes.
 
-## Repository
+## Démarrer en local
 
-| Directory              | Responsibility                                                 |
-| ---------------------- | -------------------------------------------------------------- |
-| `backend/`             | Stateless Go API, independent workers, SQL migrations, OpenAPI |
-| `web/`                 | Next.js public site; future member and teacher interfaces      |
-| `mobile/`              | Expo iOS/Android application                                   |
-| `packages/api-client/` | Generated API types and shared typed HTTP client               |
-| `infra/`               | Local PostgreSQL, S3, proxy and application containers         |
-| `docs/`                | Architecture, context map and development guide                |
-| `scripts/`             | Repeatable checks and isolated integration environments        |
-
-## Run locally
-
-With Docker and Docker Compose installed:
+Lancez cette commande depuis la racine du dépôt avec Docker et Docker Compose.
 
 ```sh
 make dev
 ```
 
-This creates `.env` from `.env.example` if missing, builds the applications, applies
-migrations once, and starts the local stack. Open [the website](http://localhost:3000)
-or [the API readiness endpoint](http://localhost:8080/health/ready).
-`make down` stops the stack and preserves development data.
+1. Ouvrez le [site local](http://localhost:3000). L’accueil permet de s’inscrire à la liste d’attente. Le lien de confirmation arrive dans [Mailpit](http://localhost:8025).
+2. Pour ouvrir l’atelier, cliquez sur **Mon espace**, saisissez `enseignante@example.test`, ouvrez son email dans Mailpit et confirmez la connexion. Cette adresse d’administration est configurée par `ADMIN_EMAILS`.
+3. Dans **Contenus**, créez un chapitre, ajoutez sa source et un PDF, puis rattachez-lui des leçons et des exercices. Le cours, les formules, le corrigé et les critères se relisent avant validation. **Importer** accepte les fiches Markdown et les exercices CSV.
+4. Dans **Épreuves et suivi**, attribuez les points aux réponses rédigées et transmettez votre commentaire. Pour les membres Suivi, vous pouvez ajouter un lien de correction vidéo, le rendez-vous hebdomadaire et l’invitation WhatsApp.
+5. Pour suivre le parcours élève en parallèle, ouvrez une fenêtre privée et connectez-vous avec une autre adresse. Les chapitres apparaissent à mesure que l’enseignante les valide.
 
-For host development and checks, install Node.js 24 LTS, npm 11+, and the Go version
-declared in `backend/go.mod`:
+Le serveur SMTP local conserve les emails dans Mailpit. Les enseignants fournissent le matériel pédagogique. `make down` arrête les services et conserve les volumes de développement. L’état précis des vérifications et des opérations nécessaires avant publication est dans [STATUS.md](STATUS.md).
+
+## Organisation
+
+| Répertoire             | Responsabilité                                                  |
+| ---------------------- | --------------------------------------------------------------- |
+| `backend/`             | API Go, workers indépendants, migrations SQL, contrat OpenAPI   |
+| `web/`                 | Site public Next.js, espace élève et atelier de l’enseignante   |
+| `mobile/ios/`          | Application native Swift, projet Xcode et tests                 |
+| `mobile/android/`      | Application native Java et projet Gradle                        |
+| `packages/api-client/` | Client HTTP TypeScript typé à partir du contrat                 |
+| `infra/`               | Pile locale PostgreSQL, S3, SMTP, proxy et services applicatifs |
+| `scripts/`             | Vérifications reproductibles dans des environnements isolés     |
+
+Le contrat OpenAPI définit les routes communes au web et aux applications mobiles. PostgreSQL conserve les sessions, la progression et les travaux différés. Le stockage compatible S3 conserve les pièces jointes. Les ventes sont désactivées par défaut avec `SALES_ENABLED=false`.
+
+## Développer et vérifier
+
+Installez Go selon `backend/go.mod`, Node 24 et npm 11+. Les applications natives utilisent Xcode ou Android Studio avec le SDK Android adapté. Les prérequis et les commandes détaillées figurent dans le [guide de développement](docs/development.md).
 
 ```sh
 make install
 make check
 make integration
 make scale-smoke
-make dev-mobile
+make browser-e2e
 ```
 
-The mobile command starts Expo; a device or simulator is required to run the app.
-The automated mobile build exports iOS/Android JavaScript bundles; it does not
-produce signed native binaries. See [development setup](docs/development.md).
-
-## Scaling and agent workflow
-
-The API and worker containers are disposable and have read-only root filesystems.
-PostgreSQL owns the queue and shared state. Files will use the S3 service when
-uploads are implemented. API replicas sit behind a proxy without session affinity.
-`make scale-smoke` exercises two APIs and two workers in an isolated environment.
-See [architecture and limits](docs/architecture.md), including the database connection budget.
-
-Agents start with [AGENTS.md](AGENTS.md) and [the context map](docs/context-map.md),
-then read only the relevant scoped instructions. The API schema is the source of
-truth; `make generate` regenerates client types and CI checks for drift.
-
-Sales are disabled by default. No registration, authentication, teaching content,
-payment or AI correction is presented as implemented. [STATUS.md](STATUS.md)
-records what was actually verified and what remains.
+Consultez le [plan et les critères de livraison](PLANS.md), la [carte du code](docs/context-map.md) et les [choix d’architecture](docs/architecture.md). Les règles de contribution commencent dans [AGENTS.md](AGENTS.md).

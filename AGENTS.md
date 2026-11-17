@@ -10,8 +10,8 @@
 ## Repository boundaries
 
 - `backend/`: Go HTTP API, workers, versioned SQL migrations, canonical OpenAPI contract.
-- `web/`: Next.js public site, future member area and teacher back-office.
-- `mobile/`: Expo iOS/Android client; no checkout or billing UI.
+- `web/`: Next.js public site, member area and teacher back-office.
+- `mobile/`: native Swift iOS and Java Android clients. Show subscription locks from the shared access contract; use StoreKit/Google Play Billing for purchases and verify them on the backend before granting access.
 - `packages/api-client/`: generated TypeScript API types and shared transport.
 - `infra/`: local orchestration and deployment configuration.
 - `docs/`: focused architecture, decisions and operating guides.
@@ -29,7 +29,7 @@
 ## Architecture invariants
 
 - API and workers are disposable stateless processes. Never persist sessions, uploads, quotas, locks or jobs in process memory or the local filesystem.
-- PostgreSQL owns shared state and the durable queue; S3-compatible object storage owns files. No sticky sessions. Caches must be optional and never the source of truth.
+- PostgreSQL currently owns shared state and the durable queue; handlers depend on transport-neutral worker interfaces so the queue adapter can change. S3-compatible object storage owns files. No sticky sessions. Caches must be optional and never the source of truth.
 - Run migrations as a separate one-shot deployment step, never from API startup.
 - Workers claim jobs atomically; execution is at least once and handlers must be idempotent. API requests must not spawn durable work in goroutines.
 - Keep business rules on the backend; expose a versioned OpenAPI contract. Generate client types instead of copying DTOs.

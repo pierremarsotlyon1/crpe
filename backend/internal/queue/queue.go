@@ -5,15 +5,14 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/pierremarsotlyon1/crpe/backend/internal/worker"
 )
 
-var ErrLostLease = errors.New("job lease no longer owned")
+var ErrLostLease = worker.ErrLostLease
 
 type Job struct {
 	ID         int64
@@ -63,38 +62,6 @@ func (q *Queue) Claim(ctx context.Context, lease time.Duration) (Job, error) {
 		return Job{}, fmt.Errorf("claim job: %w", err)
 	}
 	return job, nil
-}
-
-// CompleteProbe commits a durable, idempotent side effect and acknowledgement together.
-// Future external side effects need their own provider idempotency key or outbox protocol.
-func (q *Queue) CompleteProbe(ctx context.Context, job Job) error {
-	tx, err := q.pool.Begin(ctx)
-	if err != nil {
-		return fmt.Errorf("begin probe: %w", err)
-	}
-	defer func() { _ = tx.Rollback(ctx) }()
-	var ownedID int64
-	err = tx.QueryRow(ctx, `SELECT id FROM jobs
-		WHERE id = $1 AND status = 'running' AND claim_token = $2::uuid AND lease_until > now()
-		FOR UPDATE`, job.ID, job.ClaimToken,
-	).Scan(&ownedID)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return ErrLostLease
-	}
-	if err != nil {
-		return fmt.Errorf("check probe ownership: %w", err)
-	}
-	if _, err := tx.Exec(ctx, `INSERT INTO job_probe_results (job_id) VALUES ($1) ON CONFLICT DO NOTHING`, job.ID); err != nil {
-		return fmt.Errorf("record probe: %w", err)
-	}
-	if _, err := tx.Exec(ctx, `UPDATE jobs SET status = 'completed', completed_at = now(),
-		claim_token = NULL, lease_until = NULL, last_error = NULL WHERE id = $1`, job.ID); err != nil {
-		return fmt.Errorf("acknowledge probe: %w", err)
-	}
-	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("commit probe: %w", err)
-	}
-	return nil
 }
 
 func (q *Queue) Fail(ctx context.Context, job Job, delay time.Duration) error {

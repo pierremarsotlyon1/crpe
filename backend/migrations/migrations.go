@@ -13,7 +13,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-const Latest = "0001_queue.sql"
+const Latest = "0014_store_order_identity.sql"
 
 //go:embed *.sql
 var files embed.FS

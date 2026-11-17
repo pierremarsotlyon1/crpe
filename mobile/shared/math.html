@@ -1,0 +1,11 @@
+<!doctype html><html lang="fr"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'"><style>body{margin:0;color:#183e35;font:17px/1.5 -apple-system,Roboto,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}</style><body><main></main><script>/*KATEX*/</script><script>
+const value = new TextDecoder().decode(Uint8Array.from(atob("PAYLOAD_BASE64"), c => c.charCodeAt(0)));
+const root = document.querySelector("main");
+value.split(/(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)/g).forEach((part,index)=>{
+  if(index%2===0){root.append(document.createTextNode(part));return;}
+  const block=part.startsWith("$$"), span=document.createElement("span");
+  katex.render(part.slice(block?2:1,block?-2:-1),span,{output:"mathml",displayMode:block,trust:false,throwOnError:false,maxExpand:500,maxSize:12});
+  root.append(span);
+});
+new ResizeObserver(()=>window.webkit?.messageHandlers?.size?.postMessage(root.offsetHeight)).observe(root);
+</script></body></html>

@@ -2,7 +2,6 @@ FROM node:24-alpine AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY web/package.json ./web/package.json
-COPY mobile/package.json ./mobile/package.json
 COPY packages/api-client/package.json ./packages/api-client/package.json
 RUN npm ci --no-audit --no-fund
 

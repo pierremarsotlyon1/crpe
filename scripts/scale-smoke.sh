@@ -21,7 +21,8 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-compose up --build --detach --wait --scale api=2 --scale worker=2 proxy worker
+compose build api
+compose up --no-build --detach --wait --scale api=2 --scale worker=2 proxy worker
 port=$(compose port proxy 8080 | sed 's/.*://')
 url="http://127.0.0.1:$port"
 test "$(compose ps --status running -q api | wc -l | tr -d ' ')" -eq 2

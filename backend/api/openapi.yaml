@@ -1,21 +1,33 @@
+---
 openapi: 3.1.0
 info:
   title: Prépa Maths CRPE API
-  version: 0.1.0
-  description: Runtime foundation. Educational, authentication and billing routes are not implemented.
+  version: 1.0.0
+  description: Authentication, validated learning materials, practice, progress and teacher review.
 servers:
-  - url: /
+  - url: "/"
 tags:
   - name: Operations
     description: Process liveness and dependency readiness.
   - name: Configuration
     description: Public application capabilities.
+  - name: Identity
+    description: Identity operations.
+  - name: Waitlist
+    description: Waitlist operations.
+  - name: Learning
+    description: Learning operations.
+  - name: Teacher
+    description: Teacher operations.
+  - name: Submissions
+    description: Submissions operations.
 paths:
-  /health/live:
+  "/health/live":
     get:
       operationId: getLiveness
       security: []
-      tags: [Operations]
+      tags:
+        - Operations
       summary: Process liveness independent of backing services
       responses:
         "200":
@@ -23,12 +35,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Health"
-  /health/ready:
+                "$ref": "#/components/schemas/Health"
+  "/health/ready":
     get:
       operationId: getReadiness
       security: []
-      tags: [Operations]
+      tags:
+        - Operations
       summary: Database and schema readiness
       responses:
         "200":
@@ -36,18 +49,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Health"
+                "$ref": "#/components/schemas/Health"
         "503":
           description: Required backing service or migration is unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Unavailable"
-  /v1/config:
+                "$ref": "#/components/schemas/Unavailable"
+  "/v1/config":
     get:
       operationId: getPublicConfig
       security: []
-      tags: [Configuration]
+      tags:
+        - Configuration
       summary: Public product flags without secrets
       responses:
         "200":
@@ -55,30 +69,3165 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublicConfig"
+                "$ref": "#/components/schemas/PublicConfig"
+  "/v1/auth/request":
+    post:
+      operationId: requestLogin
+      summary: Request login
+      tags:
+        - Identity
+      security: []
+      responses:
+        "202":
+          description: Request accepted
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LinkRequest"
+  "/v1/auth/verify":
+    post:
+      operationId: verifyLogin
+      summary: Verify login
+      tags:
+        - Identity
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Session"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VerifyRequest"
+  "/v1/auth/logout":
+    post:
+      operationId: logout
+      summary: Logout
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/me":
+    get:
+      operationId: getMember
+      summary: Get member
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    delete:
+      operationId: deleteMember
+      summary: Delete member
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/me/export":
+    get:
+      operationId: exportMember
+      summary: Export member
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Export"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/waitlist":
+    post:
+      operationId: joinWaitlist
+      summary: Join waitlist
+      tags:
+        - Waitlist
+      security: []
+      responses:
+        "202":
+          description: Request accepted
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/WaitlistRequest"
+  "/v1/waitlist/confirm":
+    post:
+      operationId: confirmWaitlist
+      summary: Confirm waitlist
+      tags:
+        - Waitlist
+      security: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TokenRequest"
+  "/v1/waitlist/unsubscribe":
+    post:
+      operationId: unsubscribeWaitlist
+      summary: Unsubscribe waitlist
+      tags:
+        - Waitlist
+      security: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TokenRequest"
+  "/v1/catalog":
+    get:
+      operationId: listCatalog
+      summary: List catalog
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Catalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/public/subjects":
+    get:
+      operationId: listPublicSubjects
+      summary: List public subjects
+      tags:
+        - Learning
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Catalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/practice":
+    get:
+      operationId: listPractice
+      summary: List practice
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Catalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: mode
+          in: query
+          schema:
+            type: string
+            enum:
+              - daily
+              - diagnostic
+              - revision
+  "/v1/attempts":
+    post:
+      operationId: gradeAttempt
+      summary: Grade attempt
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Attempt"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AttemptInput"
+  "/v1/progress":
+    get:
+      operationId: getProgress
+      summary: Get progress
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Progress"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/content":
+    get:
+      operationId: getAdminCatalog
+      summary: Get admin catalog
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminCatalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    post:
+      operationId: createContent
+      summary: Create content
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminContent"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentInput"
+  "/v1/admin/content/{id}":
+    put:
+      operationId: editContent
+      summary: Edit content
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminContent"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentInput"
+    delete:
+      operationId: deleteContent
+      summary: Delete content
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/admin/content/{id}/validate":
+    post:
+      operationId: validateContent
+      summary: Validate content
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminContent"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/admin/stats":
+    get:
+      operationId: getTeacherStats
+      summary: Get teacher stats
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/submissions":
+    get:
+      operationId: getTeacherSubmissions
+      summary: Get teacher submissions
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Submissions"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/submissions/{id}/review":
+    post:
+      operationId: reviewSubmission
+      summary: Review submission
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Submission"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Review"
+  "/v1/submissions":
+    get:
+      operationId: getSubmissions
+      summary: Get submissions
+      tags:
+        - Submissions
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Submissions"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    post:
+      operationId: submitWork
+      summary: Submit work
+      tags:
+        - Submissions
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Submission"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - exerciseId
+              properties:
+                exerciseId:
+                  type: string
+                  format: uuid
+                image:
+                  type: string
+                  format: binary
+                text:
+                  type: string
+                clientId:
+                  type: string
+                  format: uuid
+  "/v1/submissions/{id}/image":
+    get:
+      operationId: getSubmissionImage
+      summary: Get submission image
+      tags:
+        - Submissions
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/admin/import":
+    post:
+      operationId: importContent
+      summary: Import content
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminCatalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImportInput"
+  "/v1/admin/content/{id}/documents":
+    post:
+      operationId: addDocument
+      summary: Add document
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Document"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - title
+                - file
+              properties:
+                title:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+  "/v1/admin/documents/{id}":
+    delete:
+      operationId: removeDocument
+      summary: Remove document
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/documents/{id}/file":
+    get:
+      operationId: downloadDocument
+      summary: Download document
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/mock-sessions":
+    post:
+      operationId: startMock
+      summary: Start mock
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MockStart"
+    get:
+      operationId: listCompletedMocks
+      summary: List completed mocks
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockReviews"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/mock-sessions/{id}":
+    get:
+      operationId: getMock
+      summary: Get mock
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/mock-sessions/{id}/finish":
+    post:
+      operationId: finishMock
+      summary: Finish mock
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MockFinish"
+  "/v1/oral-sessions":
+    post:
+      operationId: startOral
+      summary: Start oral
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OralSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OralStart"
+    get:
+      operationId: listOral
+      summary: List oral
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OralSessions"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/oral-sessions/{id}/finish":
+    post:
+      operationId: finishOral
+      summary: Finish oral
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OralSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OralFinish"
+  "/v1/oral-sessions/{id}/transcribe":
+    post:
+      operationId: transcribeOral
+      summary: Transcribe oral
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Transcript"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - audio
+              properties:
+                audio:
+                  type: string
+                  format: binary
+  "/v1/oral-sessions/{id}/speech":
+    post:
+      operationId: speakQuestion
+      summary: Speak question
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SpeechInput"
+  "/v1/admin/oral-sessions":
+    get:
+      operationId: getOralReviews
+      summary: Get oral reviews
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OralSessions"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/oral-sessions/{id}/review":
+    post:
+      operationId: reviewOral
+      summary: Review oral
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OralSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OralReview"
+  "/v1/revision-plan":
+    get:
+      operationId: getRevisionPlan
+      summary: Get revision plan
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RevisionPlan"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/mock-sessions/{id}/answers":
+    put:
+      operationId: saveMockAnswers
+      summary: Save mock answers
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MockFinish"
+  "/v1/billing/plans":
+    get:
+      operationId: listPlans
+      summary: List plans
+      tags:
+        - Configuration
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Plans"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/billing/checkout":
+    post:
+      operationId: startCheckout
+      summary: Start checkout
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Redirect"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckoutInput"
+  "/v1/billing/portal":
+    post:
+      operationId: openBillingPortal
+      summary: Open billing portal
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Redirect"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/billing/invoices":
+    get:
+      operationId: listInvoices
+      summary: List invoices
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Invoices"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/payments":
+    get:
+      operationId: getPayments
+      summary: Get payments
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Payments"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/refunds":
+    post:
+      operationId: refundPayment
+      summary: Refund payment
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Refund"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RefundInput"
+  "/v1/billing/webhook":
+    post:
+      operationId: receiveStripeEvent
+      summary: Receive stripe event
+      tags:
+        - Operations
+      security: []
+      responses:
+        "204":
+          description: Completed
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      parameters:
+        - name: Stripe-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+  "/v1/admin/mock-drafts":
+    post:
+      operationId: generateMockDraft
+      summary: Generate mock draft
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminCatalog"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MockDraftInput"
+  "/v1/submissions/{id}":
+    get:
+      operationId: getSubmission
+      summary: Get submission
+      tags:
+        - Submissions
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Submission"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/support":
+    get:
+      operationId: getSupport
+      summary: Get support
+      tags:
+        - Learning
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Support"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/support":
+    get:
+      operationId: getTeacherSupport
+      summary: Get teacher support
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupportSettings"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    put:
+      operationId: setTeacherSupport
+      summary: Set teacher support
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupportSettings"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupportSettings"
+  "/v1/admin/mock-sessions":
+    get:
+      operationId: listMocksForReview
+      summary: List mocks for review
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockReviews"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/admin/mock-sessions/{id}":
+    get:
+      operationId: readMockForReview
+      summary: Read mock for review
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockSession"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/admin/mock-sessions/{id}/review":
+    post:
+      operationId: setMockReview
+      summary: Set mock review
+      tags:
+        - Teacher
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MockReview"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MockReviewInput"
+  "/v1/me/access":
+    get:
+      operationId: getMemberAccess
+      summary: Get member access
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MemberAccess"
+        default:
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/me/store-products":
+    get:
+      operationId: getStoreProducts
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      summary: Configured native products and current purchase provider
+      responses:
+        "200":
+          description: Verified result
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StoreProducts"
+        default:
+          description: Request rejected
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: platform
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - apple
+              - google
+  "/v1/me/store-orders":
+    post:
+      operationId: reserveStoreOrder
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      summary: Reserve a native purchase before opening the payment sheet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/StoreOrderInput"
+      responses:
+        "200":
+          description: Verified result
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StoreOrder"
+        default:
+          description: Request rejected
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/me/store-orders/{platform}":
+    delete:
+      operationId: cancelStoreOrder
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      summary: Release a cancelled native order
+      responses:
+        "204":
+          description: Processed
+        default:
+          description: Request rejected
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: platform
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - apple
+              - google
+        - in: query
+          name: orderId
+          required: true
+          schema:
+            type: string
+            format: uuid
+  "/v1/me/store-purchases":
+    post:
+      operationId: verifyStorePurchase
+      tags:
+        - Identity
+      security:
+        - bearer: []
+        - session: []
+      summary: Verify or restore an app store subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/StorePurchaseInput"
+      responses:
+        "200":
+          description: Verified result
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StoreReceipt"
+        default:
+          description: Request rejected
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/v1/store-notifications/{platform}":
+    post:
+      operationId: storeNotification
+      tags:
+        - Identity
+      security: []
+      summary: Authenticate a store notification and refresh the authoritative subscription state
+      responses:
+        "204":
+          description: Processed
+        default:
+          description: Request rejected
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      parameters:
+        - name: platform
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - apple
+              - google
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
 components:
   schemas:
     Health:
       type: object
       additionalProperties: false
-      required: [status]
+      required:
+        - status
       properties:
         status:
           type: string
-          enum: [ok]
+          enum:
+            - ok
     Unavailable:
       type: object
       additionalProperties: false
-      required: [status]
+      required:
+        - status
       properties:
         status:
           type: string
-          enum: [unavailable]
+          enum:
+            - unavailable
     PublicConfig:
       type: object
       additionalProperties: false
-      required: [salesEnabled]
+      required:
+        - salesEnabled
       properties:
         salesEnabled:
           type: boolean
           default: false
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - error
+      properties:
+        error:
+          type: string
+    User:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - email
+        - role
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        role:
+          type: string
+          enum:
+            - admin
+            - student
+        supportAccess:
+          type: boolean
+    LinkRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - email
+      properties:
+        email:
+          type: string
+        client:
+          type: string
+          enum:
+            - web
+            - mobile
+    VerifyRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - token
+      properties:
+        token:
+          type: string
+        client:
+          type: string
+          enum:
+            - web
+            - mobile
+    TokenRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Session:
+      type: object
+      additionalProperties: false
+      required:
+        - user
+      properties:
+        user:
+          "$ref": "#/components/schemas/User"
+        token:
+          type: string
+    WaitlistRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - email
+        - consent
+      properties:
+        email:
+          type: string
+        consent:
+          type: boolean
+    ContentInput:
+      type: object
+      additionalProperties: false
+      required:
+        - kind
+        - title
+      properties:
+        examId:
+          type: string
+        kind:
+          type: string
+          enum:
+            - chapter
+            - lesson
+            - exercise
+            - mock
+            - oral
+        parentId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        skill:
+          type: string
+        position:
+          type: integer
+        format:
+          type: string
+          enum:
+            - text
+            - choice
+            - numeric
+        choices:
+          type: array
+          items:
+            type: string
+        criteria:
+          type: array
+          items:
+            type: string
+        videoUrl:
+          type: string
+        answer:
+          type: string
+        solution:
+          type: string
+        tolerance:
+          type: number
+          minimum: 0
+        sourceTitle:
+          type: string
+        sourceUrl:
+          type: string
+        sourceYear:
+          type: integer
+        durationMinutes:
+          type: integer
+        prepMinutes:
+          type: integer
+        points:
+          type: number
+          minimum: 0
+        videoDescription:
+          type: string
+        publicCorrection:
+          type: string
+    Content:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - examId
+        - kind
+        - title
+        - body
+        - skill
+        - position
+        - format
+        - choices
+        - criteria
+        - videoUrl
+        - status
+        - sourceTitle
+        - sourceUrl
+        - sourceYear
+        - durationMinutes
+        - prepMinutes
+        - points
+        - documents
+        - videoDescription
+      properties:
+        id:
+          type: string
+          format: uuid
+        examId:
+          type: string
+        kind:
+          type: string
+          enum:
+            - chapter
+            - lesson
+            - exercise
+            - mock
+            - oral
+        parentId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        skill:
+          type: string
+        position:
+          type: integer
+        format:
+          type: string
+          enum:
+            - text
+            - choice
+            - numeric
+        choices:
+          type: array
+          items:
+            type: string
+        criteria:
+          type: array
+          items:
+            type: string
+        videoUrl:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - validated
+        sourceTitle:
+          type: string
+        sourceUrl:
+          type: string
+        sourceYear:
+          type: integer
+        durationMinutes:
+          type: integer
+        prepMinutes:
+          type: integer
+        points:
+          type: number
+          minimum: 0
+        documents:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Document"
+        videoDescription:
+          type: string
+    AdminContent:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - examId
+        - kind
+        - title
+        - body
+        - skill
+        - position
+        - format
+        - choices
+        - criteria
+        - videoUrl
+        - status
+        - answer
+        - solution
+        - tolerance
+        - sourceTitle
+        - sourceUrl
+        - sourceYear
+        - durationMinutes
+        - prepMinutes
+        - points
+        - documents
+        - videoDescription
+        - demo
+        - publicCorrection
+      properties:
+        id:
+          type: string
+          format: uuid
+        examId:
+          type: string
+        kind:
+          type: string
+          enum:
+            - chapter
+            - lesson
+            - exercise
+            - mock
+            - oral
+        parentId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        skill:
+          type: string
+        position:
+          type: integer
+        format:
+          type: string
+          enum:
+            - text
+            - choice
+            - numeric
+        choices:
+          type: array
+          items:
+            type: string
+        criteria:
+          type: array
+          items:
+            type: string
+        videoUrl:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - validated
+        answer:
+          type: string
+        solution:
+          type: string
+        tolerance:
+          type: number
+          minimum: 0
+        sourceTitle:
+          type: string
+        sourceUrl:
+          type: string
+        sourceYear:
+          type: integer
+        durationMinutes:
+          type: integer
+        prepMinutes:
+          type: integer
+        points:
+          type: number
+          minimum: 0
+        documents:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Document"
+        videoDescription:
+          type: string
+        publicCorrection:
+          type: string
+        demo:
+          type: boolean
+    Catalog:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Content"
+    AdminCatalog:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminContent"
+    AttemptInput:
+      type: object
+      additionalProperties: false
+      required:
+        - clientId
+        - exerciseId
+        - answer
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        exerciseId:
+          type: string
+          format: uuid
+        answer:
+          type: string
+        performedAt:
+          type: string
+          format: date-time
+    Attempt:
+      type: object
+      additionalProperties: false
+      required:
+        - clientId
+        - exerciseId
+        - correct
+        - feedback
+        - nextReviewAt
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        exerciseId:
+          type: string
+          format: uuid
+        correct:
+          type: boolean
+        feedback:
+          type: string
+        nextReviewAt:
+          type: string
+          format: date-time
+    SkillProgress:
+      type: object
+      additionalProperties: false
+      required:
+        - skill
+        - attempts
+        - correct
+        - nextReviewAt
+      properties:
+        skill:
+          type: string
+        attempts:
+          type: integer
+        correct:
+          type: integer
+        nextReviewAt:
+          type: string
+          format: date-time
+    Progress:
+      type: object
+      additionalProperties: false
+      required:
+        - attempts
+        - correct
+        - streak
+        - skills
+      properties:
+        attempts:
+          type: integer
+        correct:
+          type: integer
+        streak:
+          type: integer
+        skills:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SkillProgress"
+    Stats:
+      type: object
+      additionalProperties: false
+      required:
+        - users
+        - confirmedEmails
+        - attempts
+        - pendingReviews
+        - aiRuns
+        - aiInputTokens
+        - aiOutputTokens
+        - aiUnpricedRuns
+        - activeAccess
+        - estimatedCostUsd
+      properties:
+        users:
+          type: integer
+        confirmedEmails:
+          type: integer
+        attempts:
+          type: integer
+        pendingReviews:
+          type: integer
+        aiRuns:
+          type: integer
+        aiInputTokens:
+          type: integer
+        aiOutputTokens:
+          type: integer
+        aiUnpricedRuns:
+          type: integer
+        activeAccess:
+          type: integer
+        estimatedCostUsd:
+          type:
+            - number
+            - "null"
+    Submission:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - exerciseId
+        - status
+        - feedback
+        - text
+        - hasImage
+        - createdAt
+        - correctionProgress
+      properties:
+        id:
+          type: string
+          format: uuid
+        exerciseId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - pending_review
+            - ai_reviewed
+            - reviewed
+        feedback:
+          type: string
+        text:
+          type: string
+        hasImage:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        correction:
+          "$ref": "#/components/schemas/Correction"
+        correctionProgress:
+          "$ref": "#/components/schemas/CorrectionProgress"
+        supportAccess:
+          type: boolean
+        reviewVideoUrl:
+          type: string
+    Submissions:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Submission"
+    Review:
+      type: object
+      additionalProperties: false
+      required:
+        - feedback
+      properties:
+        feedback:
+          type: string
+        reviewVideoUrl:
+          type: string
+    Export:
+      type: object
+      additionalProperties: true
+    Document:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - size
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        size:
+          type: integer
+    ImportInput:
+      type: object
+      additionalProperties: false
+      required:
+        - clientId
+        - items
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ContentInput"
+    MockStart:
+      type: object
+      additionalProperties: false
+      required:
+        - subjectId
+      properties:
+        subjectId:
+          type: string
+          format: uuid
+    MockAnswer:
+      type: object
+      additionalProperties: false
+      required:
+        - exerciseId
+        - answer
+      properties:
+        exerciseId:
+          type: string
+          format: uuid
+        answer:
+          type: string
+    MockFinish:
+      type: object
+      additionalProperties: false
+      required:
+        - answers
+      properties:
+        answers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MockAnswer"
+    MockResult:
+      type: object
+      additionalProperties: false
+      required:
+        - exerciseId
+        - feedback
+        - maxPoints
+        - gradingStatus
+      properties:
+        exerciseId:
+          type: string
+          format: uuid
+        correct:
+          type: boolean
+        feedback:
+          type: string
+        points:
+          type: number
+          minimum: 0
+        maxPoints:
+          type: number
+          minimum: 0
+        gradingStatus:
+          type: string
+          enum:
+            - pending_review
+            - complete
+        teacherFeedback:
+          type: string
+    MockSession:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - subjectId
+        - startedAt
+        - deadline
+        - status
+        - items
+        - results
+        - score
+        - maxScore
+        - answers
+        - automaticPoints
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectId:
+          type: string
+          format: uuid
+        startedAt:
+          type: string
+          format: date-time
+        deadline:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - active
+            - completed
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Content"
+        results:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MockResult"
+        score:
+          type: number
+          minimum: 0
+        maxScore:
+          type: number
+          minimum: 0
+        answers:
+          type: object
+          additionalProperties:
+            type: string
+        teacherFeedback:
+          type: string
+        reviewVideoUrl:
+          type: string
+        automaticPoints:
+          type: number
+          minimum: 0
+        gradingStatus:
+          type: string
+          enum:
+            - pending_review
+            - complete
+    OralStart:
+      type: object
+      additionalProperties: false
+      required: []
+      properties:
+        subjectId:
+          type: string
+          format: uuid
+    OralFinish:
+      type: object
+      additionalProperties: false
+      required:
+        - transcript
+        - answers
+      properties:
+        transcript:
+          type: string
+        answers:
+          type: array
+          items:
+            type: string
+    CriterionFeedback:
+      type: object
+      additionalProperties: false
+      required:
+        - criterion
+        - status
+        - comment
+      properties:
+        criterion:
+          type: string
+        status:
+          type: string
+          enum:
+            - validated
+            - to_work
+        comment:
+          type: string
+    OralSession:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - subjectId
+        - title
+        - body
+        - criteria
+        - questions
+        - prepMinutes
+        - durationMinutes
+        - createdAt
+        - status
+        - transcript
+        - answers
+        - feedback
+        - feedbackSource
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        criteria:
+          type: array
+          items:
+            type: string
+        questions:
+          type: array
+          items:
+            type: string
+        prepMinutes:
+          type: integer
+        durationMinutes:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - active
+            - pending_review
+            - reviewed
+        transcript:
+          type: string
+        answers:
+          type: array
+          items:
+            type: string
+        feedback:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CriterionFeedback"
+        feedbackSource:
+          type: string
+          enum:
+            - ""
+            - ai
+            - teacher
+    OralSessions:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OralSession"
+    OralReview:
+      type: object
+      additionalProperties: false
+      required:
+        - feedback
+      properties:
+        feedback:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CriterionFeedback"
+    SpeechInput:
+      type: object
+      additionalProperties: false
+      required:
+        - index
+      properties:
+        index:
+          type: integer
+    Transcript:
+      type: object
+      additionalProperties: false
+      required:
+        - text
+      properties:
+        text:
+          type: string
+    RevisionWeek:
+      type: object
+      additionalProperties: false
+      required:
+        - week
+        - skills
+        - exerciseIds
+      properties:
+        week:
+          type: integer
+        skills:
+          type: array
+          items:
+            type: string
+        exerciseIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    RevisionPlan:
+      type: object
+      additionalProperties: false
+      required:
+        - weeks
+      properties:
+        weeks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RevisionWeek"
+    Plan:
+      type: object
+      additionalProperties: false
+      required:
+        - key
+        - name
+        - amount
+        - currency
+        - interval
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        interval:
+          type: string
+        tier:
+          type: string
+          enum:
+            - autonomie
+            - suivi
+    Plans:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Plan"
+    CheckoutInput:
+      type: object
+      additionalProperties: false
+      required:
+        - planKey
+      properties:
+        planKey:
+          type: string
+    Redirect:
+      type: object
+      additionalProperties: false
+      required:
+        - url
+      properties:
+        url:
+          type: string
+    Invoice:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - status
+        - amount
+        - currency
+        - url
+        - created
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        url:
+          type: string
+        created:
+          type: integer
+    Invoices:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Invoice"
+    Payment:
+      type: object
+      additionalProperties: false
+      required:
+        - paymentIntentId
+        - email
+        - amount
+        - currency
+        - refunded
+        - createdAt
+        - refundStatus
+      properties:
+        paymentIntentId:
+          type: string
+        email:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        refunded:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        refundStatus:
+          type: string
+    Payments:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Payment"
+    RefundInput:
+      type: object
+      additionalProperties: false
+      required:
+        - paymentIntentId
+      properties:
+        paymentIntentId:
+          type: string
+    Refund:
+      type: object
+      additionalProperties: false
+      required:
+        - refundId
+      properties:
+        refundId:
+          type: string
+    MockDraftInput:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - topic
+        - count
+        - durationMinutes
+      properties:
+        title:
+          type: string
+        topic:
+          type: string
+        count:
+          type: integer
+        durationMinutes:
+          type: integer
+        sourceExerciseIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    CorrectionError:
+      type: object
+      additionalProperties: false
+      required:
+        - location
+        - message
+      properties:
+        location:
+          type: string
+        message:
+          type: string
+    Correction:
+      type: object
+      additionalProperties: false
+      required:
+        - generatedByAI
+        - source
+        - verdict
+        - summary
+        - errors
+        - writingFeedback
+        - referenceSolution
+        - needsTeacherReview
+      properties:
+        generatedByAI:
+          type: boolean
+        source:
+          type: string
+          enum:
+            - provider
+            - local_deterministic
+        verdict:
+          type: string
+          enum:
+            - correct
+            - incorrect
+            - uncertain
+        summary:
+          type: string
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CorrectionError"
+        writingFeedback:
+          type: array
+          items:
+            type: string
+        referenceSolution:
+          type: string
+        similarExerciseId:
+          type: string
+          format: uuid
+        needsTeacherReview:
+          type: boolean
+    CorrectionProgress:
+      type: object
+      additionalProperties: false
+      required:
+        - stage
+        - attempts
+        - updatedAt
+      properties:
+        stage:
+          type: string
+          enum:
+            - queued
+            - processing
+            - retrying
+            - teacher_review
+            - completed
+            - failed
+        attempts:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+    SupportSettings:
+      type: object
+      additionalProperties: false
+      required:
+        - liveUrl
+        - liveSchedule
+        - groupUrl
+      properties:
+        liveUrl:
+          type: string
+        liveSchedule:
+          type: string
+        groupUrl:
+          type: string
+    MockReview:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - subjectId
+        - title
+        - email
+        - startedAt
+        - feedback
+        - reviewVideoUrl
+        - gradingStatus
+        - supportAccess
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        email:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        feedback:
+          type: string
+        reviewVideoUrl:
+          type: string
+        gradingStatus:
+          type: string
+          enum:
+            - pending_review
+            - complete
+        supportAccess:
+          type: boolean
+    MockReviews:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MockReview"
+    Support:
+      type: object
+      additionalProperties: false
+      required:
+        - liveUrl
+        - liveSchedule
+        - groupUrl
+        - mockReviews
+      properties:
+        liveUrl:
+          type: string
+        liveSchedule:
+          type: string
+        groupUrl:
+          type: string
+        mockReviews:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MockReview"
+    MockReviewInput:
+      type: object
+      additionalProperties: false
+      required:
+        - feedback
+      properties:
+        feedback:
+          type: string
+        reviewVideoUrl:
+          type: string
+        assessments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Assessment"
+    Assessment:
+      type: object
+      additionalProperties: false
+      required:
+        - exerciseId
+        - points
+        - feedback
+      properties:
+        exerciseId:
+          type: string
+          format: uuid
+        points:
+          type: number
+          minimum: 0
+        feedback:
+          type: string
+    Capability:
+      type: object
+      additionalProperties: false
+      required:
+        - key
+        - label
+        - requiredTier
+        - allowed
+      properties:
+        key:
+          type: string
+          enum:
+            - course
+            - practice
+            - tutor
+            - mock
+            - oral
+            - live
+            - mock_video
+            - group
+        label:
+          type: string
+        requiredTier:
+          type: string
+          enum:
+            - autonomie
+            - suivi
+        allowed:
+          type: boolean
+        upgradeUrl:
+          type: string
+    MemberAccess:
+      type: object
+      additionalProperties: false
+      required:
+        - tier
+        - salesEnabled
+        - features
+      properties:
+        tier:
+          type: string
+          enum:
+            - none
+            - autonomie
+            - suivi
+        salesEnabled:
+          type: boolean
+        features:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Capability"
+        upgradeUrl:
+          type: string
+        providers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ActiveProvider"
+        validUntil:
+          type: string
+          format: date-time
+    ActiveProvider:
+      type: object
+      additionalProperties: false
+      required:
+        - provider
+        - tier
+        - planKey
+        - expiresAt
+      properties:
+        provider:
+          type: string
+          enum:
+            - stripe
+            - apple
+            - google
+        tier:
+          type: string
+          enum:
+            - autonomie
+            - suivi
+        planKey:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        managementUrl:
+          type: string
+    StoreProduct:
+      type: object
+      additionalProperties: false
+      required:
+        - tier
+        - productId
+      properties:
+        tier:
+          type: string
+          enum:
+            - autonomie
+            - suivi
+        productId:
+          type: string
+        basePlanId:
+          type: string
+    StoreProducts:
+      type: object
+      additionalProperties: false
+      required:
+        - enabled
+        - items
+        - accountToken
+      properties:
+        enabled:
+          type: boolean
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StoreProduct"
+        accountToken:
+          type: string
+        activeProvider:
+          type: string
+          enum:
+            - stripe
+            - apple
+            - google
+        activeProductId:
+          type: string
+        activeBasePlanId:
+          type: string
+        privacyUrl:
+          type: string
+        termsUrl:
+          type: string
+    StorePurchaseInput:
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - productId
+        - reference
+      properties:
+        platform:
+          type: string
+          enum:
+            - apple
+            - google
+        productId:
+          type: string
+        reference:
+          type: string
+          maxLength: 4096
+    StoreOrderInput:
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - productId
+      properties:
+        platform:
+          type: string
+          enum:
+            - apple
+            - google
+        productId:
+          type: string
+        basePlanId:
+          type: string
+        clientId:
+          type: string
+          format: uuid
+        expectedActiveProductId:
+          type: string
+        expectedActiveBasePlanId:
+          type: string
+    StoreReceipt:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - active
+            - pending
+            - expired
+            - revoked
+        expiresAt:
+          type: string
+          format: date-time
+    StoreOrder:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - expiresAt
+      properties:
+        expiresAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+    session:
+      type: apiKey
+      in: cookie
+      name: crpe_session

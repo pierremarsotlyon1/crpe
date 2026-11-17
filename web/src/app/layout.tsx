@@ -3,16 +3,30 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Prépa Maths CRPE — Bientôt",
+  title: {
+    default: "Prépa Maths CRPE — Liste d’attente",
+    template: "%s · Prépa Maths CRPE",
+  },
   description:
-    "Un espace consacré à la préparation des mathématiques du CRPE est en cours de création.",
-  robots: { index: false, follow: false },
+    "Préparation aux mathématiques du CRPE. Inscrivez-vous pour être informé de l’ouverture.",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "Prépa Maths CRPE",
+    title: "Prépa Maths CRPE",
+    description: "Préparer les mathématiques du CRPE, pas à pas.",
+  },
+  referrer: "no-referrer",
 };
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        <a href="#main-content" className="skip">
+          Aller au contenu
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

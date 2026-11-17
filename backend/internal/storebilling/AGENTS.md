@@ -1,0 +1,8 @@
+# Native subscription ledger
+
+- `config.go` reads product and base-plan mappings. The catalogue returns an account binding for the platform. Apple uses the member UUID and Google uses its lowercase SHA-256 hex digest. Treat the client-supplied SKU as a hint when restoring an earlier purchase.
+- `orders.go` serializes app-initiated payment sheets with Stripe Checkout on the same PostgreSQL user row. The stores may complete external purchases and deferred approvals independently. Reconcile every verified payment, including overlapping historical providers.
+- `ledger.go` authenticates notifications through the provider adapter and re-reads subscription state before changing rights. Check the configured environment, product, base plan and account. Serialize by canonical reference and use the database clock for acceptance order.
+- The original subscription hash, environment and provider identify the ledger row. Deleting the member clears the encrypted lookup reference and retains a tombstone that prevents reassignment. Public responses omit provider credentials and purchase references.
+- `ack_store_purchase` commits the latest verified rights before Play acknowledgement. A delivery carries the internal UUID. Renewal, expiry, replacement and refund observations all use the same reconciliation path.
+- Run the integration suite with a disposable PostgreSQL schema and the race detector. Tests cover concurrent replay, ownership, account deletion, cross-channel orders, pending replacements, refund, acknowledgement retry and capability enforcement. Live store acceptance additionally requires the store's product catalogue and test account.

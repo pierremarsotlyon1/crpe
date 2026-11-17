@@ -1,31 +1,30 @@
-# Execution plan
+# Execution and acceptance plan
 
-The attached mission describes the product roadmap. This change establishes the foundation requested in chat: root-level separation, a stateless horizontally scalable backend, and concise agent context. Later product milestones remain pending.
+The active scope covers the public site, teacher atelier, learner web area, stateless backend and native iOS/Android apps. A running screen, an external provider contract and a published service require different acceptance evidence. Observed results are recorded in [STATUS.md](STATUS.md).
 
-## J0 — Repository and runtime foundation (verified locally)
+| Milestone                       | Implemented slice                                                                                                                                                                  | Acceptance and remaining gate                                                                                                                                                                                                                                                                                                           |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| J0 · Repository and runtime     | Root applications, scoped instructions, typed contract, explicit migrations, shared SQL queue, separate processes, Compose                                                         | `make check`, `make integration`, `make scale-smoke`, `make dev`. Recheck the current revision from a clean checkout and observe remote CI after publication.                                                                                                                                                                           |
+| J1 · Identity and content model | Magic-link login, roles, revocable sessions/credentials, consent, account export/deletion, content hierarchy and publication checks                                                | PostgreSQL integration suite crosses API instances and exercises role/ownership restrictions. Browser acceptance uses two authenticated users.                                                                                                                                                                                          |
+| J2 · Public site                | Double opt-in, confirmation, unsubscribe, waiting page, legal templates, sharing metadata and sitemap. Public corrected articles require a teacher-authored article and validation | Browser signup/confirm/unsubscribe and local mobile Lighthouse. Owner completes legal copy and verifies the deployed domain.                                                                                                                                                                                                            |
+| J3 · Teacher atelier            | Chapter/lesson/exercise editor, reference answers, criteria, KaTeX preview, source metadata/PDFs, videos, CSV/Markdown imports, draft validation and review queue                  | `sh scripts/browser-e2e.sh` covers creating and publishing a complete chapter, reading its PDF as a separate learner and reviewing a copy.                                                                                                                                                                                              |
+| J4 · Learner web                | Chapters, graded attempts, photo/text submissions, daily practice, 20-question diagnostic and weekly revision plan                                                                 | Browser suite passed learner access, exercise grading, all 20 diagnostic questions and the revision plan. Approved teaching material remains an owner input.                                                                                                                                                                            |
+| J5 · Copy correction            | Durable grading jobs with real progress stages, reference-based feedback, deterministic numeric checks, quota/cost accounting, human review when uncertain                         | `go test ./internal/correction` from `backend/` runs 30 local fixtures. PostgreSQL replay/quota integration and full-stack progress test cover processing states. Complete separate text/vision provider acceptance with approved credentials.                                                                                          |
+| J6 · Commerce                   | Flag-gated offers, Stripe Checkout, portal, invoices, payments, refunds, signed webhooks and entitlements                                                                          | Billing unit/PostgreSQL tests exercise concurrent Checkout, provider fixtures, duplicate/out-of-order events and access changes. Browser tests cover matching a locked feature to the eligible plan. Verify checkout, cancellation, invoice and refund against a real Stripe test account before enabling sales.                        |
+| J7 · Native mobile              | Swift and Java clients, magic links, native credential storage, generated contract, practice, offline synchronization, local reminders and copy uploads                            | Simulator/emulator mixed mock, photo upload, interrupted sync/relaunch and unsigned platform builds passed. StoreKit purchase tests, Google Play Billing retry tests, signed provider fixtures and web management of both channels passed locally. Store sandbox acceptance, signed distribution and physical-device acceptance remain. |
+| J8 · Mock exams                 | Teacher-validated source-backed exercise bank, exact arithmetic draft mode, teacher barème, server deadlines, autosave, provisional and final results                              | Backend tests cover draft exclusion and expiry. Browser test saves, reloads and submits a timed mixed exam, then observes manual grading and Suivi video feedback. Provider-generated drafts need live model acceptance.                                                                                                                |
+| J9 · Oral practice              | Validated prompts, preparation timer, recording/transcription controls, 2–3 questions, speech adapter, written answers, criteria and teacher review                                | Local browser exercise validates transcript entry and criteria review. Test real microphone, transcription, voice playback and model-assisted feedback with configured providers.                                                                                                                                                       |
+| J10 · Release operations        | Role/ownership guards, upload bounds, replica tests, health probes and deployment guidance                                                                                         | Local integration, backup/restore and replica checks passed. Complete remote CI, deployed accessibility/performance checks, EU hosting, production restore/alerting, physical device tests and owner release review.                                                                                                                    |
 
-- [x] Root applications and shared contract separated.
-- [x] Scoped agent instructions, context map, architecture decisions.
-- [x] Go API and separate durable PostgreSQL worker, explicit migrations.
-- [x] Next.js and Expo foundations with generated shared API contract.
-- [x] Local Docker orchestration and GitHub Actions workflow defined.
-- [x] Verification: `make check`, `make integration`, `make scale-smoke`, `make dev`.
-- [x] Report observed results and remaining prerequisites in `STATUS.md`.
-- [ ] Observe a green GitHub Actions run after the branch is published. No remote CI result is claimed.
+## Verification commands
 
-## Product roadmap (not implemented)
+```sh
+make check
+make integration
+make scale-smoke
+sh scripts/browser-e2e.sh
+ruby mobile/generate.rb --check
+mobile/android/gradlew -p mobile/android :app:testDebugUnitTest :app:assembleDebug
+```
 
-| Milestone | Scope                                                            | Acceptance evidence to add with implementation                                  |
-| --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| J1        | Auth, roles, educational schema, consent and access              | PostgreSQL integration tests for cross-replica authentication and authorization |
-| J2        | Double opt-in waiting list, legal templates, validated SEO pages | Browser signup test and mobile Lighthouse >= 90                                 |
-| J3        | Teacher editor, imports and validation                           | Browser test creating and validating a complete chapter                         |
-| J4        | Student course, diagnostic and revision plan                     | Browser test for the full student journey                                       |
-| J5        | AI correction and deterministic checks                           | 30-case local fixture suite plus documented provider test                       |
-| J6        | Stripe and entitlements, behind sales flag                       | Stripe test-mode webhook, idempotency and access tests                          |
-| J7        | Mobile practice, spaced repetition, offline sync                 | iOS/Android development builds and scheduling tests                             |
-| J8        | Validated mock examinations                                      | Full examination test and draft-access denial tests                             |
-| J9        | Oral practice, transcription and speech                          | Full local session plus documented provider test                                |
-| J10       | Security, accessibility and operations                           | Fresh-clone checks and deployment runbook                                       |
-
-Do not mark a milestone complete when only its scaffolding exists. Introduce executable acceptance commands as each feature is implemented.
+Use the Xcode `PrepaCRPE` scheme to run the Swift simulator tests. The browser suite provisions its own local services and fixture data. Run provider-backed scenarios separately with a test tenant and recorded results. Keep `SALES_ENABLED=false` until the owner approves commerce and legal setup.

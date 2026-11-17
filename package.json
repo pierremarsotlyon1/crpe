@@ -8,7 +8,6 @@
   },
   "workspaces": [
     "web",
-    "mobile",
     "packages/api-client"
   ],
   "scripts": {
@@ -23,5 +22,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.8",
     "@redocly/cli": "2.79.0"
+  },
+  "overrides": {
+    "katex": "0.19.1"
   }
 }

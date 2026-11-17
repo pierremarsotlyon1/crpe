@@ -1,0 +1,35 @@
+plugins { id 'com.android.application' }
+def releaseApi = providers.gradleProperty('CRPE_API_URL').orElse(providers.environmentVariable('CRPE_API_URL')).orElse('').get()
+if (releaseApi && !(releaseApi ==~ /^https:\/\/[A-Za-z0-9.-]+(:[0-9]+)?\/?$/)) {
+    throw new GradleException('CRPE_API_URL must be an HTTPS origin.')
+}
+def debugApi = providers.gradleProperty('CRPE_DEBUG_API_URL').orElse('http://10.0.2.2:8080').get()
+if (!(debugApi ==~ /^https?:\/\/[A-Za-z0-9.-]+(:[0-9]+)?\/?$/)) throw new GradleException('Invalid development origin')
+android {
+    namespace 'fr.prepamathscrpe.mobile'
+    compileSdk 37
+    defaultConfig {
+        applicationId 'fr.prepamathscrpe.mobile'
+        minSdk 28
+        targetSdk 37
+        versionCode 1
+        versionName '1.0.0'
+    }
+    buildFeatures { buildConfig true }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes {
+        debug { buildConfigField 'String','API_URL','"' + debugApi + '"'; manifestPlaceholders = [allowCleartext:'true'] }
+        release { buildConfigField 'String','API_URL','"' + releaseApi + '"'; manifestPlaceholders = [allowCleartext:'false'] }
+    }
+    sourceSets.main.assets.srcDirs += ['../../shared']
+}
+tasks.configureEach { task ->
+    if (task.name == 'preReleaseBuild') task.doFirst {
+        if (!releaseApi) throw new GradleException('Configure CRPE_API_URL to build a release.')
+    }
+}
+dependencies {
+    implementation 'androidx.activity:activity:1.13.0'
+    implementation 'com.android.billingclient:billing:9.1.0'
+    testImplementation 'junit:junit:4.13.2'
+}

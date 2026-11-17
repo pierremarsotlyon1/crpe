@@ -1,0 +1,656 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0C019D8307DE2E99C4436949 /* LearningStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D62ABABD541F20007E5A96 /* LearningStore.swift */; };
+		0D3780DC988A809CC364B787 /* PracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF99A6D9F27E1440BDE8294 /* PracticeTests.swift */; };
+		238992B41B31E2FD4FC1AC6B /* KATEX-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B40727A53F0303916991FDB /* KATEX-LICENSE.txt */; };
+		2C9F474B31E6B7213DEEF2A6 /* OralPracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAE4A04C41AFB18DF3AB047 /* OralPracticeTests.swift */; };
+		31E84BB7EDA38AEBE9E8623B /* OralAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7448995F1356155D6D2F305 /* OralAudio.swift */; };
+		34E12ABEDF5EC7EDE4604FED /* MockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50903B9AEE05CA73A772360D /* MockScreen.swift */; };
+		371D69D90C4931D340B05611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E35A6078240A605BA396F65B /* Assets.xcassets */; };
+		372DA1325F250436074CC866 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B490533A997FCD094E5EEB /* Media.swift */; };
+		4F184DD023784BA3A52A5C10 /* MemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293459E1C7F65BEFC31D3E56 /* MemberModel.swift */; };
+		54FE19943C69E778B2BD904C /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E9D6D4AE0053372D9E073E /* Activities.swift */; };
+		59917E998EE54E7C18C7DB78 /* katex.min.txt in Resources */ = {isa = PBXBuildFile; fileRef = 62ACA95D9A566132470377A7 /* katex.min.txt */; };
+		5F597136A6A64D3C3F91BA7C /* math.html in Resources */ = {isa = PBXBuildFile; fileRef = FEFF338B3163711AE93D30C2 /* math.html */; };
+		60CA871687779DA64E100DC1 /* StoreKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E078A53AF57A21FADF564 /* StoreKitTests.swift */; };
+		64D326F0B95FB686C7DB410D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52792DF72C67D8C6A48DCFD4 /* Foundation.framework */; };
+		69E7A2BE0621089DAA946413 /* MemberAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1130881520A87B9645213641 /* MemberAPI.swift */; };
+		750F86C7E92CEFD463D9675A /* Subscriptions.storekit in Resources */ = {isa = PBXBuildFile; fileRef = ACB45944F8B260AD3E85FA49 /* Subscriptions.storekit */; };
+		7DCD579A718874EBE02AC30D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52792DF72C67D8C6A48DCFD4 /* Foundation.framework */; };
+		81DE79CFB527FAD0769E3B7D /* PrepaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638BF02451C49D64AF03600 /* PrepaApp.swift */; };
+		946E22435F55933F171C59FC /* NativeJourney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB8766023AA5CCD1F6C9AC3 /* NativeJourney.swift */; };
+		96056C0F447644683CB4372A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B70E25ABAFDE69C398DCCBA2 /* PrivacyInfo.xcprivacy */; };
+		966C54CC6B221D472C81DDE9 /* OralJourney.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CC6309712859072DE27D04 /* OralJourney.swift */; };
+		A75E7A7A10AE9DF7E8253B30 /* API.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE7A850F482C717AC4D3A0A /* API.generated.swift */; };
+		ADC6D26624F15AFA24A453F2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52792DF72C67D8C6A48DCFD4 /* Foundation.framework */; };
+		C4565E1ED7197D2985127CDF /* StorePurchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BBE9432BBBB382F65BAC44 /* StorePurchases.swift */; };
+		D40C8868E88B1C364700F3DF /* OralPracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7311F223918988D6701B745 /* OralPracticeView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B5CE6560915C6959C7CA6E65 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BA31472FB2C47ED753BB96C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2D06C0FE7611D25AFF463E9;
+			remoteInfo = PrepaCRPE;
+		};
+		E6E2C6C5574C11787FF1D7B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BA31472FB2C47ED753BB96C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2D06C0FE7611D25AFF463E9;
+			remoteInfo = PrepaCRPE;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03ACFF1C2A3CE6581A15D60B /* NativeJourneyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NativeJourneyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1130881520A87B9645213641 /* MemberAPI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemberAPI.swift; sourceTree = "<group>"; };
+		1638BF02451C49D64AF03600 /* PrepaApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrepaApp.swift; sourceTree = "<group>"; };
+		26E9D6D4AE0053372D9E073E /* Activities.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
+		293459E1C7F65BEFC31D3E56 /* MemberModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemberModel.swift; sourceTree = "<group>"; };
+		3AF99A6D9F27E1440BDE8294 /* PracticeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PracticeTests.swift; sourceTree = "<group>"; };
+		3B40727A53F0303916991FDB /* KATEX-LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; name = "KATEX-LICENSE.txt"; path = "../shared/KATEX-LICENSE.txt"; sourceTree = "<group>"; };
+		50903B9AEE05CA73A772360D /* MockScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockScreen.swift; sourceTree = "<group>"; };
+		52792DF72C67D8C6A48DCFD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		62ACA95D9A566132470377A7 /* katex.min.txt */ = {isa = PBXFileReference; includeInIndex = 1; name = katex.min.txt; path = ../shared/katex.min.txt; sourceTree = "<group>"; };
+		6FB8766023AA5CCD1F6C9AC3 /* NativeJourney.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NativeJourney.swift; sourceTree = "<group>"; };
+		79D62ABABD541F20007E5A96 /* LearningStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LearningStore.swift; sourceTree = "<group>"; };
+		81A8D8545B024ECD9A01E397 /* PrepaCRPE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrepaCRPE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACB45944F8B260AD3E85FA49 /* Subscriptions.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = Subscriptions.storekit; sourceTree = "<group>"; };
+		B1B490533A997FCD094E5EEB /* Media.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		B70E25ABAFDE69C398DCCBA2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C2CC6309712859072DE27D04 /* OralJourney.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OralJourney.swift; sourceTree = "<group>"; };
+		CAE7A850F482C717AC4D3A0A /* API.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = API.generated.swift; sourceTree = "<group>"; };
+		DCAE4A04C41AFB18DF3AB047 /* OralPracticeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OralPracticeTests.swift; sourceTree = "<group>"; };
+		E35A6078240A605BA396F65B /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7448995F1356155D6D2F305 /* OralAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OralAudio.swift; sourceTree = "<group>"; };
+		EB9E078A53AF57A21FADF564 /* StoreKitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreKitTests.swift; sourceTree = "<group>"; };
+		F7311F223918988D6701B745 /* OralPracticeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OralPracticeView.swift; sourceTree = "<group>"; };
+		F7BBE9432BBBB382F65BAC44 /* StorePurchases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StorePurchases.swift; sourceTree = "<group>"; };
+		FA5E535A9E48744A209EBDDA /* PrepaCRPETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrepaCRPETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEFF338B3163711AE93D30C2 /* math.html */ = {isa = PBXFileReference; includeInIndex = 1; name = math.html; path = ../shared/math.html; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		27091836769DC29F2668A98F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADC6D26624F15AFA24A453F2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		962C46EEBEFADE61D3873FAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64D326F0B95FB686C7DB410D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE090120ED832FADF8B791ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7DCD579A718874EBE02AC30D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2F7F362C7D7015FFB7692A55 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				CAE7A850F482C717AC4D3A0A /* API.generated.swift */,
+				79D62ABABD541F20007E5A96 /* LearningStore.swift */,
+				B1B490533A997FCD094E5EEB /* Media.swift */,
+				1130881520A87B9645213641 /* MemberAPI.swift */,
+				293459E1C7F65BEFC31D3E56 /* MemberModel.swift */,
+				1638BF02451C49D64AF03600 /* PrepaApp.swift */,
+				50903B9AEE05CA73A772360D /* MockScreen.swift */,
+				26E9D6D4AE0053372D9E073E /* Activities.swift */,
+				E7448995F1356155D6D2F305 /* OralAudio.swift */,
+				F7311F223918988D6701B745 /* OralPracticeView.swift */,
+				F7BBE9432BBBB382F65BAC44 /* StorePurchases.swift */,
+			);
+			name = Sources;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		4019251A369ADEB04F57D46D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				52792DF72C67D8C6A48DCFD4 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		4358BECC55D498CA141B2A35 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4019251A369ADEB04F57D46D /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BEFD56C96883AE7390BE4F01 /* JourneyTests */ = {
+			isa = PBXGroup;
+			children = (
+				6FB8766023AA5CCD1F6C9AC3 /* NativeJourney.swift */,
+				C2CC6309712859072DE27D04 /* OralJourney.swift */,
+			);
+			name = JourneyTests;
+			path = JourneyTests;
+			sourceTree = "<group>";
+		};
+		DE5EDBC1856B311CDD7A4DE9 = {
+			isa = PBXGroup;
+			children = (
+				F3E0EB5CE1CEEFCE50B8B684 /* Products */,
+				4358BECC55D498CA141B2A35 /* Frameworks */,
+				2F7F362C7D7015FFB7692A55 /* Sources */,
+				E35A6078240A605BA396F65B /* Assets.xcassets */,
+				3B40727A53F0303916991FDB /* KATEX-LICENSE.txt */,
+				62ACA95D9A566132470377A7 /* katex.min.txt */,
+				FEFF338B3163711AE93D30C2 /* math.html */,
+				FEB5FDD5172FFE3E0860E047 /* Tests */,
+				BEFD56C96883AE7390BE4F01 /* JourneyTests */,
+				B70E25ABAFDE69C398DCCBA2 /* PrivacyInfo.xcprivacy */,
+			);
+			sourceTree = "<group>";
+		};
+		F3E0EB5CE1CEEFCE50B8B684 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81A8D8545B024ECD9A01E397 /* PrepaCRPE.app */,
+				FA5E535A9E48744A209EBDDA /* PrepaCRPETests.xctest */,
+				03ACFF1C2A3CE6581A15D60B /* NativeJourneyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEB5FDD5172FFE3E0860E047 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3AF99A6D9F27E1440BDE8294 /* PracticeTests.swift */,
+				DCAE4A04C41AFB18DF3AB047 /* OralPracticeTests.swift */,
+				EB9E078A53AF57A21FADF564 /* StoreKitTests.swift */,
+				ACB45944F8B260AD3E85FA49 /* Subscriptions.storekit */,
+			);
+			name = Tests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BEA0F7C238D04E65F86A6707 /* PrepaCRPETests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6426556627E2C2A2199D85B6 /* Build configuration list for PBXNativeTarget "PrepaCRPETests" */;
+			buildPhases = (
+				140DE46757E8BBD4E3806EF9 /* Sources */,
+				27091836769DC29F2668A98F /* Frameworks */,
+				AD92A598D9BA2B5E8203A0FF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1523C93094284AD0C7E4D56 /* PBXTargetDependency */,
+			);
+			name = PrepaCRPETests;
+			productName = PrepaCRPETests;
+			productReference = FA5E535A9E48744A209EBDDA /* PrepaCRPETests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC33EE8695A4E5674EBA712E /* NativeJourneyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C6C3408A6582D7C74423D92 /* Build configuration list for PBXNativeTarget "NativeJourneyTests" */;
+			buildPhases = (
+				936638C8AE610CEC717431AE /* Sources */,
+				FE090120ED832FADF8B791ED /* Frameworks */,
+				D91852CBD6AF36F93CE0704A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA8C2E75E72F94785BF58746 /* PBXTargetDependency */,
+			);
+			name = NativeJourneyTests;
+			productName = NativeJourneyTests;
+			productReference = 03ACFF1C2A3CE6581A15D60B /* NativeJourneyTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		D2D06C0FE7611D25AFF463E9 /* PrepaCRPE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEE649602500FE47C6100FEA /* Build configuration list for PBXNativeTarget "PrepaCRPE" */;
+			buildPhases = (
+				8EC3681396F32C4A273C4EB3 /* Sources */,
+				962C46EEBEFADE61D3873FAD /* Frameworks */,
+				044D50B6DC361AC2BD99BB87 /* Resources */,
+				BD44BD7EA616EF7F2D66D201 /* Validate release API origin */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PrepaCRPE;
+			productName = PrepaCRPE;
+			productReference = 81A8D8545B024ECD9A01E397 /* PrepaCRPE.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3BA31472FB2C47ED753BB96C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					D2D06C0FE7611D25AFF463E9 = {
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = ED1DDB5055FDEF777EABD983 /* Build configuration list for PBXProject "PrepaCRPE" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = fr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DE5EDBC1856B311CDD7A4DE9;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 100;
+			productRefGroup = F3E0EB5CE1CEEFCE50B8B684 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2D06C0FE7611D25AFF463E9 /* PrepaCRPE */,
+				BEA0F7C238D04E65F86A6707 /* PrepaCRPETests */,
+				CC33EE8695A4E5674EBA712E /* NativeJourneyTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		044D50B6DC361AC2BD99BB87 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				371D69D90C4931D340B05611 /* Assets.xcassets in Resources */,
+				238992B41B31E2FD4FC1AC6B /* KATEX-LICENSE.txt in Resources */,
+				59917E998EE54E7C18C7DB78 /* katex.min.txt in Resources */,
+				5F597136A6A64D3C3F91BA7C /* math.html in Resources */,
+				96056C0F447644683CB4372A /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD92A598D9BA2B5E8203A0FF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				750F86C7E92CEFD463D9675A /* Subscriptions.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D91852CBD6AF36F93CE0704A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BD44BD7EA616EF7F2D66D201 /* Validate release API origin */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Validate release API origin";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]; then\n  if ! printf '%s' \"$CRPE_API_URL\" | /usr/bin/grep -Eq '^https://[A-Za-z0-9.-]+(:[0-9]+)?/?$'; then\n    echo \"error: Set CRPE_API_URL to your HTTPS API origin.\"\n    exit 1\n  fi\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		140DE46757E8BBD4E3806EF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D3780DC988A809CC364B787 /* PracticeTests.swift in Sources */,
+				2C9F474B31E6B7213DEEF2A6 /* OralPracticeTests.swift in Sources */,
+				60CA871687779DA64E100DC1 /* StoreKitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EC3681396F32C4A273C4EB3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A75E7A7A10AE9DF7E8253B30 /* API.generated.swift in Sources */,
+				0C019D8307DE2E99C4436949 /* LearningStore.swift in Sources */,
+				372DA1325F250436074CC866 /* Media.swift in Sources */,
+				69E7A2BE0621089DAA946413 /* MemberAPI.swift in Sources */,
+				4F184DD023784BA3A52A5C10 /* MemberModel.swift in Sources */,
+				81DE79CFB527FAD0769E3B7D /* PrepaApp.swift in Sources */,
+				34E12ABEDF5EC7EDE4604FED /* MockScreen.swift in Sources */,
+				54FE19943C69E778B2BD904C /* Activities.swift in Sources */,
+				31E84BB7EDA38AEBE9E8623B /* OralAudio.swift in Sources */,
+				D40C8868E88B1C364700F3DF /* OralPracticeView.swift in Sources */,
+				C4565E1ED7197D2985127CDF /* StorePurchases.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		936638C8AE610CEC717431AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				946E22435F55933F171C59FC /* NativeJourney.swift in Sources */,
+				966C54CC6B221D472C81DDE9 /* OralJourney.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D1523C93094284AD0C7E4D56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PrepaCRPE;
+			target = D2D06C0FE7611D25AFF463E9 /* PrepaCRPE */;
+			targetProxy = E6E2C6C5574C11787FF1D7B6 /* PBXContainerItemProxy */;
+		};
+		DA8C2E75E72F94785BF58746 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PrepaCRPE;
+			target = D2D06C0FE7611D25AFF463E9 /* PrepaCRPE */;
+			targetProxy = B5CE6560915C6959C7CA6E65 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		74F3C303C67D7FBC9FE7A8C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		75879789E46ADBD9AAC08954 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				INFOPLIST_FILE = JourneyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.prepamathscrpe.testjourney;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PrepaCRPE;
+			};
+			name = Debug;
+		};
+		7BA1996DAF58EDFD6D2701AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				INFOPLIST_FILE = JourneyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.prepamathscrpe.testjourney;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PrepaCRPE;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		82B55227584E123A1098D5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CRPE_API_URL = "";
+				CRPE_APP_ID = fr.prepamathscrpe.mobile;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CRPE_APP_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9CD8DEBE7EA288C8FABBEF86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.prepamathscrpe.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrepaCRPE.app/PrepaCRPE";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BF818224278A336308A16DD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.prepamathscrpe.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PrepaCRPE.app/PrepaCRPE";
+			};
+			name = Debug;
+		};
+		C07910B311543111DD390B9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = Tests/SimulatorDebug.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CRPE_API_URL = "http://localhost:8080";
+				CRPE_APP_ID = fr.prepamathscrpe.mobile;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CRPE_APP_ID)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C715565C591B8B716D9948C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6426556627E2C2A2199D85B6 /* Build configuration list for PBXNativeTarget "PrepaCRPETests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CD8DEBE7EA288C8FABBEF86 /* Release */,
+				BF818224278A336308A16DD4 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7C6C3408A6582D7C74423D92 /* Build configuration list for PBXNativeTarget "NativeJourneyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BA1996DAF58EDFD6D2701AB /* Release */,
+				75879789E46ADBD9AAC08954 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED1DDB5055FDEF777EABD983 /* Build configuration list for PBXProject "PrepaCRPE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C715565C591B8B716D9948C6 /* Debug */,
+				74F3C303C67D7FBC9FE7A8C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FEE649602500FE47C6100FEA /* Build configuration list for PBXNativeTarget "PrepaCRPE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82B55227584E123A1098D5AA /* Release */,
+				C07910B311543111DD390B9F /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3BA31472FB2C47ED753BB96C /* Project object */;
+}

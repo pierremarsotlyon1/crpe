@@ -1,0 +1,10 @@
+version: "2"
+run:
+  timeout: 5m
+linters:
+  default: standard
+  settings:
+    staticcheck:
+      # Keep correctness and simplification checks; this algebraic rewrite makes
+      # URL trust boundaries harder to read without changing their behavior.
+      checks: ["all", "-QF1001"]

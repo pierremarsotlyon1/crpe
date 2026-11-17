@@ -1,11 +1,12 @@
-# Mobile application
+# Native mobile apps
 
-- Expo/React Native. Entry point: `index.ts`; initial screen: `src/App.tsx`; API origin: `src/api.ts`.
-- `EXPO_PUBLIC_API_URL` must be reachable from the device (a physical device cannot use the developer machine's localhost). It is public configuration; never put secrets in `EXPO_PUBLIC_*`.
-- Use `@crpe/api-client`. Keep generated API types in the shared package, not duplicated here.
-- The current screen is a foundation only. Auth, practice, notifications, photo upload and offline synchronization are pending.
-- Never add checkout, purchase links or a billing flow. UI is French; code is English.
-- Use the Expo SDK-compatible React/React Native versions together; check official docs before upgrading.
-- Root commands: `npm run dev -w @crpe/mobile`, `npm run typecheck -w @crpe/mobile`, `npm run lint -w @crpe/mobile`, `npm run build -w @crpe/mobile`.
-- `build` exports iOS/Android JavaScript bundles. It does not build/sign native binaries. `ios`/`android` require local native SDKs and are separate verification steps.
-- Generated `.expo/`, `dist/`, `ios/`, `android/` are not normal authoring context.
+- The iOS app uses SwiftUI, URLSession, Keychain, SQLite and UserNotifications. Open `ios/PrepaCRPE.xcodeproj` and build the `PrepaCRPE` scheme. Start with `ios/Sources/PrepaApp.swift` and `MemberModel.swift`.
+- The Android app uses Java, Android SDK views, HttpURLConnection, Android Keystore, SQLite and AlarmManager. Entry point is `android/app/src/main/java/fr/prepamathscrpe/mobile/MainActivity.java`.
+- `ruby mobile/generate.rb` generates Swift Codable models and native route names from the backend OpenAPI contract. Run `ruby mobile/generate.rb --check` for drift. The web TypeScript client is independent.
+- Keep all educational material teacher-owned and validated. The backend grades attempts and sets review dates. Native clients can schedule cached material offline and persist UUID-keyed work before sending. Preserve each account’s cache isolation.
+- Display the server's correction stage and timestamp. Poll only active processing stages while the copies tab is visible in the foreground. Preserve the last received state when offline. Keep locally queued work distinguishable.
+- Read `/v1/me/access` before syncing gated resources. Restricted activities stay visible, grey and tappable. Present the required tier. Use StoreKit 2 / Google Play Billing for purchases, the provider’s localized price, and the authenticated server reservation and verification endpoints. Restore prior purchases even when new sales are disabled. Only server entitlements grant access, including their expiry when offline. Keep app UI French.
+- `StorePurchases.swift` / `PlaySubscriptions.java` own the native store lifecycle. Keep secrets and transaction references out of logs. The server acknowledges Google purchases; finish Apple transactions only after the server persists a verified terminal state.
+- `Activities.swift` / `ActivityMenu.java` own capability navigation and private Suivi resources. `MockScreen.swift` / `MockPractice.java` own timed exams, per-account drafts and grading results. `OralPracticeView.swift` / `OralPractice.java` own native oral practice, recording and criteria feedback.
+- `make ios-test`, `make android-test`, `make android-build` and `make native-check` run from the project root. See `README.md` in this directory for native device journeys, configuration and signing.
+- KaTeX is vendored only for typesetting in an offline, network-blocked WebView. Its MIT license lives in `shared/KATEX-LICENSE.txt`. Navigation, storage, network calls, notifications and media access use native SDKs.

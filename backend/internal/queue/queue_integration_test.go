@@ -18,7 +18,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pierremarsotlyon1/crpe/backend/internal/database"
 	"github.com/pierremarsotlyon1/crpe/backend/internal/httpapi"
+	"github.com/pierremarsotlyon1/crpe/backend/internal/probe"
 	"github.com/pierremarsotlyon1/crpe/backend/internal/queue"
+	"github.com/pierremarsotlyon1/crpe/backend/internal/worker"
 	"github.com/pierremarsotlyon1/crpe/backend/migrations"
 )
 
@@ -59,7 +61,10 @@ func TestConcurrentWorkersClaimEachJobOnce(t *testing.T) {
 			t.Errorf("job %d was claimed twice", job.ID)
 		}
 		seen[job.ID] = true
-		if err := queues[0].CompleteProbe(t.Context(), job); err != nil {
+		if err := probe.Handler(pool)(t.Context(), worker.Message{ID: fmt.Sprint(job.ID)}); err != nil {
+			t.Fatal(err)
+		}
+		if err := queues[0].Ack(t.Context(), job); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -86,7 +91,7 @@ func TestExpiredLeaseIsReclaimedAndOldWorkerIsFenced(t *testing.T) {
 	if _, err := pool.Exec(t.Context(), "UPDATE jobs SET lease_until = now() - interval '1 second' WHERE id = $1", first.ID); err != nil {
 		t.Fatal(err)
 	}
-	if err := q.CompleteProbe(t.Context(), first); !errors.Is(err, queue.ErrLostLease) {
+	if err := q.Ack(t.Context(), first); !errors.Is(err, queue.ErrLostLease) {
 		t.Fatalf("expired lease must reject completion before reclaim: %v", err)
 	}
 	if err := q.Fail(t.Context(), first, 0); !errors.Is(err, queue.ErrLostLease) {
@@ -99,16 +104,22 @@ func TestExpiredLeaseIsReclaimedAndOldWorkerIsFenced(t *testing.T) {
 	if second.ID != first.ID || second.ClaimToken == first.ClaimToken || second.Attempts != 2 {
 		t.Fatalf("invalid recovery: first=%+v second=%+v", first, second)
 	}
-	if err := q.CompleteProbe(t.Context(), first); !errors.Is(err, queue.ErrLostLease) {
+	if err := q.Ack(t.Context(), first); !errors.Is(err, queue.ErrLostLease) {
 		t.Fatalf("old completion must be fenced: %v", err)
 	}
 	if err := q.Fail(t.Context(), first, 0); !errors.Is(err, queue.ErrLostLease) {
 		t.Fatalf("old retry must be fenced: %v", err)
 	}
-	if err := q.CompleteProbe(t.Context(), second); err != nil {
+	// A crash after effect commit but before acknowledgement may replay the handler.
+	for range 2 {
+		if err := probe.Handler(pool)(t.Context(), worker.Message{ID: fmt.Sprint(second.ID)}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := q.Ack(t.Context(), second); err != nil {
 		t.Fatal(err)
 	}
-	if err := q.CompleteProbe(t.Context(), second); !errors.Is(err, queue.ErrLostLease) {
+	if err := q.Ack(t.Context(), second); !errors.Is(err, queue.ErrLostLease) {
 		t.Fatalf("duplicate completion must not be applied: %v", err)
 	}
 	var effects int
@@ -176,13 +187,17 @@ func TestReadinessRequiresMigrationsAndMigrationsAreRepeatable(t *testing.T) {
 	assertHTTPStatus(t, handler, "/health/live", 200)
 	assertHTTPStatus(t, handler, "/health/ready", 503)
 	applyMigrations(t, pool)
+	var firstCount int
+	if err := pool.QueryRow(t.Context(), "SELECT count(*) FROM schema_migrations").Scan(&firstCount); err != nil {
+		t.Fatal(err)
+	}
 	applyMigrations(t, pool)
 	assertHTTPStatus(t, handler, "/health/ready", 200)
 	var applied int
 	if err := pool.QueryRow(t.Context(), "SELECT count(*) FROM schema_migrations").Scan(&applied); err != nil {
 		t.Fatal(err)
 	}
-	if applied != 1 {
+	if firstCount == 0 || applied != firstCount {
 		t.Fatalf("migration reapplied: %d ledger entries", applied)
 	}
 	if _, err := pool.Exec(t.Context(), "UPDATE schema_migrations SET checksum='tampered'"); err != nil {
